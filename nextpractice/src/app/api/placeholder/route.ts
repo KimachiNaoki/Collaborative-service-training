@@ -1,23 +1,31 @@
+//環境変数を受け取る
+const apiKey = process.env.NEXT_PUBLIC_APIKEY;
+const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+//都道府県一覧のデータをサイトから取得する
 export const GetPrefectures = async () => {
-  const response = await fetch(
-    "https://opendata.resas-portal.go.jp/api/v1/prefectures",
-    {
-      headers: {
-        "X-API-KEY": "69YCMgeFyLadqBawSHSfiI39UVydSJYA7bw8fchk",
-      },
-    }
-  );
+  if (!apiKey || !apiUrl) {
+    throw new Error("エラーが発生しました。");
+  }
+  const response = await fetch(apiUrl + "prefectures", {
+    headers: {
+      "X-API-KEY": apiKey,
+    },
+  });
   const prefectures = await response.json();
   return prefectures;
 };
 
+//人口のデータをサイトから取得する
 export const GetPopulation = async (prefCode: string) => {
+  if (!apiKey || !apiUrl) {
+    throw new Error("エラーが発生しました");
+  }
   const response = await fetch(
-    "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=" +
-      prefCode,
+    apiUrl + "population/composition/perYear?prefCode=" + prefCode,
     {
       headers: {
-        "X-API-KEY": "69YCMgeFyLadqBawSHSfiI39UVydSJYA7bw8fchk",
+        "X-API-KEY": apiKey,
       },
     }
   );

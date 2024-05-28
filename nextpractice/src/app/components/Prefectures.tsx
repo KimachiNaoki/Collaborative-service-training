@@ -1,12 +1,14 @@
+//型を定義
 type Props = {
   prefectures: {
     prefCode: number;
     prefName: string;
   }[];
 
-  onChange: (name: string, prefName: number, check: boolean) => void;
+  onChange: (prefName: string, prefCode: number, check: boolean) => void;
 };
 
+//都道府県一覧を表示するコンポーネント
 export default function Prefectures({ prefectures, onChange }: Props) {
   return (
     <div>
