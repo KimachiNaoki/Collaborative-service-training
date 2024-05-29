@@ -33,7 +33,7 @@ export default function PopulationsGraph({
 
   const options: Highcharts.Options = {
     title: {
-      text: "各県の" + selectedGraph + "推移",
+      text: selectedGraph + "推移",
     },
     xAxis: {
       title: {
@@ -46,11 +46,11 @@ export default function PopulationsGraph({
         text: "人口数",
       },
     },
+
     series:
       series.length === 0
         ? [{ type: "line", name: "都道府県名", data: [] }]
         : series,
   };
-
   return <HighchartsReact highcharts={Highcharts} options={options} />;
 }
