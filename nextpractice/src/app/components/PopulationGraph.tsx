@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
@@ -32,8 +33,15 @@ export default function PopulationsGraph({
   const categories = Array.from(categoriesSet).sort();
 
   const options: Highcharts.Options = {
+    chart: {
+      type: "line",
+      backgroundColor: "white",
+    },
     title: {
       text: selectedGraph + "推移",
+    },
+    subtitle: {
+      text: "Source: https://opendata.resas-portal.go.jp/",
     },
     xAxis: {
       title: {
@@ -47,10 +55,25 @@ export default function PopulationsGraph({
       },
     },
 
+    tooltip: {
+      valueSuffix: "人",
+    },
+    legend: {
+      layout: "vertical",
+      align: "right",
+      verticalAlign: "top",
+      borderWidth: 0,
+    },
+
     series:
       series.length === 0
         ? [{ type: "line", name: "都道府県名", data: [] }]
         : series,
   };
-  return <HighchartsReact highcharts={Highcharts} options={options} />;
+
+  return (
+    <Box width={{ base: "100%", md: "80%", lg: "70%" }} margin="0 auto">
+      <HighchartsReact highcharts={Highcharts} options={options} />
+    </Box>
+  );
 }

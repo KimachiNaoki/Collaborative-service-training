@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { useGetPrefectures } from "../hooks/useGetPrefectures";
-import { useGetPopulations } from "../hooks/useGetPopulations";
+import { useState, useEffect } from "react";
+import { useGetPrefectureData } from "../hooks/useGetPrefectureData";
+import { useGetPopulationData } from "../hooks/useGetPopulationData";
+import { useRouter } from "next/navigation";
 import Prefectures from "./Prefectures";
 import PopulationsGraph from "./PopulationGraph";
 import RadioButton from "./RadioButton";
@@ -11,19 +12,29 @@ import { Flex, Spinner, Box } from "@chakra-ui/react";
 
 //Mainの処理
 export default function Main() {
-  //stateを定義
+  //グラフの種類を取得するstate
   const [selectedOption, setSelectedOption] = useState<string>("総人口");
-  //カスタムフックから必要な関数・stateを取り出す
-  const { prefectures, loading } = useGetPrefectures();
+  //都道府県データを取得するカスタムフックから必要なデータを取得する
+  const { prefectures, loading } = useGetPrefectureData();
+  //人口データを取得するカスタムフックから必要なデータを取得する
   const { populations, fetchPopulationData, removePopulationData } =
-    useGetPopulations(selectedOption);
+    useGetPopulationData(selectedOption);
+  //画面遷移のための定数
+  const router = useRouter();
 
-  //グラフの種類が変更されたときに、stateの値を変更する
+  // 都道府県データが0件の場合、データ取得失敗画面にリダイレクト
+  useEffect(() => {
+    if (!loading && prefectures.length === 0) {
+      router.push("/notGet");
+    }
+  }, [loading, prefectures, router]);
+
+  //グラフの種類が変更されたときに、selectedOptionの値を変更する
   const changeGraph = (select: string) => {
     setSelectedOption(select);
   };
 
-  //チェックボックスが押されたときに関数を呼び出す
+  //都道府県チェックボックスが押されたときに関数を呼び出す
   const handleClickCheck = async (
     prefName: string,
     prefCode: number,

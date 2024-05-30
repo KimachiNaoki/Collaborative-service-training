@@ -1,33 +1,15 @@
 import { useState, useEffect } from "react";
 import { GetPopulation } from "../api/placeholder/route";
+import { Population, PopulationApiResponse } from "../types";
 
-//型を定義
-type Population = {
-  year: number;
-  value: number;
-};
-
-type PopulationData = {
-  label: string;
-  data: Population[];
-};
-
-type PopulationApiResponse = {
-  message: null;
-  result: {
-    boundaryYear: number;
-    data: PopulationData[];
-  };
-};
-
-//選択されたグラフの種類の人口データを取得する
-export const useGetPopulations = (selectedOption: string) => {
-  //stateを追加
+//人口データを取得するフック
+export const useGetPopulationData = (selectedOption: string) => {
+  //人口のデータを取得するstateを追加
   const [populations, setPopulations] = useState<
     { prefName: string; prefCode: number; data: Population[] }[]
   >([]);
 
-  //実際にチェックされた都道府県の人口データを取得する
+  //チェックされた都道府県の人口データをpopulationに追加する
   const fetchPopulationData = async (prefCode: number, prefName: string) => {
     try {
       const resultPopulations: PopulationApiResponse = await GetPopulation(
@@ -53,14 +35,14 @@ export const useGetPopulations = (selectedOption: string) => {
     }
   };
 
-  //チェックが外された都道府県のデータを削除する
+  //チェックが外された都道府県のデータをpopulationから削除する
   const removePopulationData = (prefName: string) => {
     setPopulations((prevPopulations) =>
       prevPopulations.filter((item) => item.prefName !== prefName)
     );
   };
 
-  //グラフの種類を変更したときに、stateのデータに変更する
+  //グラフの種類を変更したときに、populationのデータを変更する
   useEffect(() => {
     const updatePopulationData = async () => {
       const updatedPopulations = await Promise.all(
