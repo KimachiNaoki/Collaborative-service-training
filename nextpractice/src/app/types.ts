@@ -26,3 +26,16 @@ export type PopulationApiResponse = {
     data: PopulationData[];
   };
 };
+
+export type City = {
+  prefName: string;
+  prefCode: number;
+  cityCode: number;
+  cityName: string;
+  bigCityFlag: number;
+};
+
+export type CityApiResponse = {
+  message: null;
+  result: City[];
+};

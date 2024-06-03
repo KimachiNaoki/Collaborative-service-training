@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import Prefectures from "./Prefectures";
 import PopulationsGraph from "./PopulationGraph";
 import RadioButton from "./RadioButton";
-import Header from "./Header";
 import { Flex, Spinner, Box } from "@chakra-ui/react";
 
 //Mainの処理
@@ -55,7 +54,6 @@ export default function Main() {
         </Flex>
       ) : (
         <>
-          <Header />
           <Prefectures prefectures={prefectures} onChange={handleClickCheck} />
           <br />
           <Box p={4} borderWidth="1px" borderRadius="lg" boxShadow="lg">

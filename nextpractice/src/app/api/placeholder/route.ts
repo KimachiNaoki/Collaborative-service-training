@@ -32,3 +32,17 @@ export const GetPopulation = async (prefCode: string) => {
   const population = await response.json();
   return population;
 };
+
+//市町村一覧のデータをサイトから取得する
+export const GetCity = async (prefCode: string) => {
+  if (!apiKey || !apiUrl) {
+    throw new Error("エラーが発生しました。");
+  }
+  const response = await fetch(apiUrl + "cities?prefCode=" + prefCode, {
+    headers: {
+      "X-API-KEY": apiKey,
+    },
+  });
+  const prefectures = await response.json();
+  return prefectures;
+};
